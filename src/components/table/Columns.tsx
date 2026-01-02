@@ -1,7 +1,6 @@
 import { Check, Ghost, Icon, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
+import { Avatar, AvatarImage } from "../ui/avatar";
+import { api } from '@/api/api';
 
 export type Country = {
   id: string;
@@ -19,6 +20,17 @@ export type Country = {
   title_ru: string;
   title_tr: string;
 };
+
+async function deleteRow(id:string){
+  try{
+     await api.delete(id)
+     console.log("ishladi");
+     
+  }catch(err){
+    console.log(err);
+  }
+}
+
 
 export const countryColumns: ColumnDef<Country>[] = [
   {
@@ -74,8 +86,9 @@ export const countryColumns: ColumnDef<Country>[] = [
     cell: ({ row }) => <p>{row.getValue("title_ru")}</p>,
   },
   {
-    accessorKey: "Boshqaruv",
-    cell: () => (
+    id: "actions",
+    header:"Boshqaruv",
+    cell: ({row}) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant={"ghost"} size={"icon"}>
@@ -83,9 +96,9 @@ export const countryColumns: ColumnDef<Country>[] = [
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-white p-4">
-          <Button>Edit</Button>
+          <Button >Edit</Button>
           <DropdownMenuSeparator />
-          <Button>Delete</Button>
+          <Button onClick={() => deleteRow(row.original.id)}>Delete</Button>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
