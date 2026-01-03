@@ -29,6 +29,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
+import DialogWithForm from "../form/FormCountries";
 
 interface TableContentProps<TData> {
   data: TData[];
@@ -67,8 +68,8 @@ export function TableContent<TData>({
   });
 
   return (
-    <div className="p-6  dark:to-blue-700">
-      <div className="flex items-center gap-4 py-4">
+    <div className="p-6 w-full  dark:to-blue-700">
+      <div className="flex items-center justify-between w-full gap-4 py-4">
         <Input
           placeholder="Filter English title..."
           value={
@@ -77,12 +78,11 @@ export function TableContent<TData>({
           onChange={(e) =>
             table.getColumn("title_en")?.setFilterValue(e.target.value)
           }
-          className="max-w-sm"
         />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" >
               Columns <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
@@ -98,6 +98,7 @@ export function TableContent<TData>({
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+        <DialogWithForm />
       </div>
 
       <div className="rounded-md border w-full overflow-scroll">
