@@ -30,15 +30,18 @@ import {
 } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
 import DialogWithForm from "../form/FormCountries";
+import TableSkeleton from "./TableSkeleton";
 
 interface TableContentProps<TData> {
   data: TData[];
   columns: ColumnDef<TData>[];
+  isLoading: boolean;
 }
 
 export function TableContent<TData>({
   data,
   columns,
+  isLoading,
 }: TableContentProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -49,7 +52,7 @@ export function TableContent<TData>({
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data,
+    data:(data ?? []),
     columns,
     state: {
       sorting,
@@ -82,7 +85,7 @@ export function TableContent<TData>({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" >
+            <Button variant="outline">
               Columns <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
@@ -119,7 +122,9 @@ export function TableContent<TData>({
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows.length ? (
+            {isLoading ? (
+              <TableSkeleton columns={columns.length} rows={6} />
+            ) : table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (

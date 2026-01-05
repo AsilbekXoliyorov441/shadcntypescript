@@ -2,6 +2,7 @@ import { api } from "@/api/api";
 import { countryColumns } from "@/components/table/Columns";
 import { TableContent } from "@/components/table/Table";
 import { useQuery } from "@tanstack/react-query";
+import TableSkeleton from "./../components/table/TableSkeleton";
 
 const Countries = () => {
   const { isLoading, data, error } = useQuery({
@@ -12,14 +13,14 @@ const Countries = () => {
     },
   });
 
-  if (isLoading) return <p>Loading...</p>;
+
   if (error) return <p>Error</p>;
 
   return (
     <>
       <section>
         <div>
-          <TableContent columns={countryColumns} data={data} />
+          <TableContent isLoading={isLoading} columns={countryColumns} data={data} />
         </div>
       </section>
     </>
